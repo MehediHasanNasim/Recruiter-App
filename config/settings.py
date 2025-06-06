@@ -45,6 +45,7 @@ THIRD_PARTY_APPS = [
     "rest_framework_simplejwt",
     "silk",
     "drf_yasg",
+    'django_rest_passwordreset',
 ]
 LOCAL_APPS = [
     "core.apps.CoreConfig",
@@ -173,3 +174,21 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 SITE_NAME = config('SITE_NAME', default='Repliq Limited')
+
+
+# Password Reset Settings
+DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
+    "CLASS": "django_rest_passwordreset.tokens.RandomStringTokenGenerator",
+    "OPTIONS": {
+        "min_length": 20,
+        "max_length": 30
+    }
+}
+
+DJANGO_REST_PASSWORDRESET_TOKEN_EXPIRY = 24 * 60 * 60  # 24 hours
+DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY = DJANGO_REST_PASSWORDRESET_TOKEN_EXPIRY
+
+# Email template
+PASSWORD_RESET_EMAIL_TEMPLATE = 'emails/password_reset.html'
+
+FRONTEND_RESET_PASSWORD_URL = config('FRONTEND_RESET_PASSWORD_URL')

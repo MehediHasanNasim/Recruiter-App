@@ -113,6 +113,7 @@ urlpatterns = [
     # Authentication related URLs
     path("api/v1/auth", include("auth.rest.urls")),
     path("api/v1/core/", include("core.rest.urls")),
+    path('api/auth/', include('auth.rest.urls.password_reset')),
 
 ]
 
