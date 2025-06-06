@@ -3,6 +3,8 @@ from rest_framework import serializers
 from core.models import User, UserProfile
 from core.choices import RoleChoices 
 
+from core.utils.email import send_welcome_email
+
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -38,8 +40,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        """Create a new user"""
-        # Remove confirm_password from validated_data
-        validated_data.pop("confirm_password", None)
-
-        return super().create(validated_data)
+        validated_data.pop('confirm_password', None)
+        user = super().create(validated_data)
+        
+        # Send welcome email
+        try:
+            send_welcome_email(user)
+        except Exception as e:
+            print(f"Failed to send welcome email: {e}")
+        
+        return user
