@@ -35,3 +35,34 @@ class JobPosting(BaseModel):
     
     def __str__(self):
         return f"{self.title} - {self.location}"
+    
+
+class JobApplication(BaseModel):
+    job = models.ForeignKey(
+        JobPosting, 
+        on_delete=models.CASCADE,
+        related_name='applications'
+    )
+    candidate = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='job_applications'
+    )
+    cover_letter = models.TextField()
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('PENDING', 'Pending'),
+            ('REVIEWED', 'Reviewed'),
+            ('REJECTED', 'Rejected'),
+            ('ACCEPTED', 'Accepted'),
+        ],
+        default='PENDING'
+    )
+    
+    class Meta:
+        unique_together = ['job', 'candidate']
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.candidate.email} -> {self.job.title}"

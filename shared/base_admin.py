@@ -13,9 +13,9 @@ class BaseModelAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj:
-            return self.readonly_fields + [
+            return self.readonly_fields + tuple([
                 "uid",
-            ]
+            ])
         return self.readonly_fields
 
     def get_list_display(self, request):
